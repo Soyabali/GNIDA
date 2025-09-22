@@ -24,7 +24,7 @@ class _SplaceState extends State<SplashView> {
   bool activeConnection = false;
   String T = "";
   var result,msg;
-
+  var iVersion;
   Future checkUserConnection() async {
     try {
       final result = await InternetAddress.lookup('google.com');
@@ -84,38 +84,53 @@ class _SplaceState extends State<SplashView> {
     print('---------xx--xxxxxx-------');
     super.initState();
   }
-  getlocalDataBaseValue() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    String? token = prefs.getString('sToken');
-    print('----TOKEN---87---$token');
-    if(token!=null && token!=''){
-      print('-----89---HomeScreen');
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => ComplaintHomePage()),
-      );
-    }else{
-      print('-----91----LoginScreen');
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => LoginScreen_2()),
-      );
-    }
-  }
+  // getlocalDataBaseValue() async {
+  //   SharedPreferences prefs = await SharedPreferences.getInstance();
+  //   String? token = prefs.getString('sToken');
+  //   print('----TOKEN---87---$token');
+  //   if(token!=null){
+  //     print('-----89---HomeScreen');
+  //     Navigator.push(
+  //       context,
+  //       MaterialPageRoute(builder: (context) => ComplaintHomePage()),
+  //     );
+  //   }else{
+  //     print('-----91----LoginScreen');
+  //     Navigator.push(
+  //       context,
+  //       MaterialPageRoute(builder: (context) => LoginScreen_2()),
+  //     );
+  //   }
+  // }
   Future<void> versionAliCall() async {
     try {
       // Call the API to check the app version
       var loginMap = await VerifyAppVersionRepo().verifyAppVersion(context, "1");
+      print("-----109---$loginMap");
       result = "${loginMap['Result']}";
       msg = "${loginMap['Msg']}";
+      iVersion = "${loginMap['iVersion']}";
 
       // Check result and navigate or show dialog
-      if (result == "1") {
+      if (iVersion == "1") {
         // Navigate to LoginScreen if version matches
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (context) => const LoginScreen_2()),
-        );
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        String? sToken = prefs.getString('sToken');
+
+        print("--sToken----120----$sToken");
+        if(sToken!=null){
+          print('-----122---HomeScreen');
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => ComplaintHomePage()),
+          );
+        }else {
+          print("-----118---HomeScreen");
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (context) => const LoginScreen_2()),
+          );
+        }
       } else {
         // Show dialog for mismatched version
         showDialog(

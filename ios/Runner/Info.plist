@@ -38,6 +38,9 @@
     <string>This app requires access to the photo library to take or upload a photo when submitting a complaint.</string>
     <key>NSLocationAlwaysUsageDescription</key>
     <string>This app needs your location to link your complaint to the correct area and assist in resolving the issue.</string>
+    <key>NSLocationWhenInUseUsageDescription</key>
+    <string>This app needs location access to show your address.</string>
+
 
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>

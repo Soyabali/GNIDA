@@ -22,7 +22,7 @@ environment:
   #sdk: '>=3.3.4 <4.0.0'
    #sdk: 3.5.3
 #   sdk: 3.6.1
-    sdk: 3.8.1
+    sdk: 3.9.0
 # Dependencies specify other packages that your package needs in order to work.
 # To automatically upgrade your package dependencies to the latest versions
 # consider running `flutter pub upgrade --major-versions`. Alternatively,
@@ -64,6 +64,7 @@ dependencies:
   package_info_plus: ^8.0.0
   flutter_rating_bar: ^4.0.1
   permission_handler: ^11.3.1
+  geocoding: ^4.0.0
 
 
 dev_dependencies:

@@ -8,6 +8,7 @@ import '../../services/citizenMyPostedComplaint.dart';
 import '../changePassword/changePassword.dart';
 import '../notification/notification.dart';
 import '../onlineComplaint/onlineComplaint.dart';
+import '../potholedetection/potholeDetection.dart';
 import '../resources/app_text_style.dart';
 import 'grievanceStatus/grievanceStatus.dart';
 
@@ -132,7 +133,6 @@ class _MyHomePageState extends State<ComplaintHomePage> {
         // appBar
        appBar: appBarFunction(context,"Noida One Citizen"),
        drawer: generalFunction.drawerFunction_2(context,"$sCitizenName","$sContactNo"),
-
         body: Stack(
          // fit: StackFit.expand, // Make the stack fill the entire screen
           children: [
@@ -517,6 +517,171 @@ class _MyHomePageState extends State<ComplaintHomePage> {
                           ],
                         ),
                         SizedBox(height: 10),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            InkWell(
+                              onTap: () {
+
+                                Navigator.push(context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          patholeDectionForm(name: "Pothole Detections", iCategoryCode: null,)),
+                                );
+                                print("---531----");
+                              },
+                              child: Container(
+                                height: 120,
+                                width: MediaQuery.of(context).size.width / 2 - 14,
+                                decoration: const BoxDecoration(
+                                  // border
+                                  border: Border(
+                                    left: BorderSide(
+                                      color: Colors.green,
+                                      // Specify your desired border color here
+                                      width: 5.0, // Adjust the width of the border
+                                    ),
+                                  ),
+                                  borderRadius: BorderRadius.only(
+                                    topLeft: Radius.circular(10.0),
+                                    // Adjust the radius for the top-left corner
+                                    bottomLeft: Radius.circular(10.0), // Adjust the radius for the bottom-left corner
+                                  ),
+                                ),
+                                // color: Colors.black,
+                                child: Card(
+                                    elevation: 10,
+                                    margin: EdgeInsets.all(5.0),
+                                    shadowColor: Colors.green,
+                                    shape: RoundedRectangleBorder(
+                                      side: BorderSide(color: Colors.green, width: 0.5),
+                                      borderRadius: BorderRadius.circular(10.0),
+                                    ),
+                                    child: Padding(
+                                      padding: const EdgeInsets.only(top: 10),
+                                      child: Column(
+                                        children: <Widget>[
+                                          Container(
+                                            width: 60,
+                                            height: 60,
+                                            decoration: BoxDecoration(
+                                              image: const DecorationImage(
+                                                image: AssetImage('assets/images/background_circle_1.png'), // Path to the asset
+                                                fit: BoxFit.cover, // Adjust how the image fits within the container
+                                              ),
+                                              borderRadius: BorderRadius.circular(12), // Optional: Adds rounded corners
+                                            ),
+                                            child: const Center(
+                                                child: Image(
+                                                  image: AssetImage(
+                                                      'assets/images/online_Complain.png'),
+                                                  width: 45,
+                                                  height: 45,
+                                                )),
+                                          ),
+                                          SizedBox(height: 10),
+                                          Container(
+                                            height: 1,
+                                            color: Colors.black12,
+                                          ),
+                                          SizedBox(height: 5),
+                                          // complaint_status
+                                          Text('Pothole Detections',
+                                            style: AppTextStyle.font14penSansExtraboldGreenTextStyle,
+                                          ),
+                                        ],
+                                      ),
+                                    )),
+                              ),
+                            ),
+                            SizedBox(width: 5),
+                            // InkWell(
+                            //   onTap: () {
+                            //     // Add your onTap functionality here
+                            //     print('-----109------');
+                            //     // Navigator.pushAndRemoveUntil(
+                            //     //   context,
+                            //     //   MaterialPageRoute(
+                            //     //     builder: (context) => GrievanceStatus(name: "Complaint List"),
+                            //     //   ),
+                            //     //       (Route<dynamic> route) => false, // This removes all previous routes.
+                            //     // );
+                            //     Navigator.push(
+                            //       context,
+                            //       MaterialPageRoute(
+                            //           builder: (context) =>
+                            //               GrievanceStatus(name: "Complaint List")),
+                            //     );
+                            //   },
+                            //   child: Container(
+                            //     height: 120,
+                            //     width: MediaQuery.of(context).size.width / 2 - 14,
+                            //     decoration: const BoxDecoration(
+                            //       border: Border(
+                            //         // right border side
+                            //         right: BorderSide(
+                            //           color: Colors.orange,
+                            //           // Specify your desired border color here
+                            //           width: 5.0, // Adjust the width of the border
+                            //         ),
+                            //       ),
+                            //       borderRadius: BorderRadius.only(
+                            //         topRight: Radius.circular(10.0),
+                            //         // Adjust the radius for the top-left corner
+                            //         bottomRight: Radius.circular(10.0), // Adjust the radius for the bottom-left corner
+                            //       ),
+                            //     ),
+                            //     // color: Colors.black,
+                            //     child: Card(
+                            //         elevation: 10,
+                            //         shadowColor: Colors.orange,
+                            //         shape: RoundedRectangleBorder(
+                            //           side: const BorderSide(
+                            //               color: Colors.orange, width: 0.5),
+                            //           borderRadius: BorderRadius.circular(10.0),
+                            //         ),
+                            //         child: Padding(
+                            //           padding: const EdgeInsets.only(top: 10),
+                            //           child: Column(
+                            //             children: <Widget>[
+                            //               Container(
+                            //                 width: 60,
+                            //                 height: 60,
+                            //                 decoration: BoxDecoration(
+                            //                   image: const DecorationImage(
+                            //                     image: AssetImage('assets/images/background_circle_2.png'), // Path to the asset
+                            //                     fit: BoxFit.cover, // Adjust how the image fits within the container
+                            //                   ),
+                            //                   borderRadius: BorderRadius.circular(12), // Optional: Adds rounded corners
+                            //                 ),
+                            //                 child: const Center(
+                            //                     child: Image(
+                            //                       image: AssetImage('assets/images/complaint_list.png'),
+                            //                       width: 45,
+                            //                       height: 45,
+                            //                     )),
+                            //               ),
+                            //               // complaint_status.png
+                            //               SizedBox(height: 10),
+                            //               Container(
+                            //                 height: 1,
+                            //                 color: Colors.black12,
+                            //               ),
+                            //               SizedBox(height: 5),
+                            //               Text(
+                            //                 'Complaint List',
+                            //                 style: AppTextStyle
+                            //                     .font14penSansExtraboldOrangeTextStyle,
+                            //               ),
+                            //             ],
+                            //           ),
+                            //         )),
+                            //   ),
+                            // ),
+                          ],
+                        ),
+
                         // Row(
                         //   mainAxisAlignment: MainAxisAlignment.start,
                         //   children: [
