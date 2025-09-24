@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:geocoding/geocoding.dart';
@@ -15,7 +14,6 @@ import '../../app/loader_helper.dart';
 import '../../services/PotholeDetailsRepo.dart';
 import '../../services/baseurl.dart';
 import '../../services/bindCityzenWardRepo.dart';
-import '../../services/bindSubCategoryRepo.dart';
 import '../circle/circle.dart';
 import '../complaints/complaintHomePage.dart';
 import '../complaints/raiseGrievance/onlineComplaint.dart';
@@ -44,11 +42,11 @@ class _MyHomePageState extends State<patholeDectionForm> with WidgetsBindingObse
   List shopTypeList = [];
   var result2, msg2;
 
-  bindSubCategory(String subCategoryCode) async {
-    subCategoryList = (await BindSubCategoryRepo().bindSubCategory(context,subCategoryCode))!;
-    print(" -----xxxxx-  subCategoryList--43---> $subCategoryList");
-    setState(() {});
-  }
+  // bindSubCategory(String subCategoryCode) async {
+  //   subCategoryList = (await BindSubCategoryRepo().bindSubCategory(context,subCategoryCode))!;
+  //   print(" -----xxxxx-  subCategoryList--43---> $subCategoryList");
+  //   setState(() {});
+  // }
 
   bindWard() async {
     wardList = await BindCityzenWardRepo().getbindWard();
@@ -61,7 +59,6 @@ class _MyHomePageState extends State<patholeDectionForm> with WidgetsBindingObse
   var SectorData;
   var stateblank;
   final stateDropdownFocus = GlobalKey();
-
   TextEditingController _addressController = TextEditingController();
   TextEditingController _landmarkController = TextEditingController();
   TextEditingController _mentionController = TextEditingController();
@@ -190,7 +187,6 @@ class _MyHomePageState extends State<patholeDectionForm> with WidgetsBindingObse
     print('-------country------${place.country}');
     hideLoader();
   }
-
   // generateRandomNumber
 
   String generateRandom20DigitNumber() {
@@ -298,11 +294,10 @@ class _MyHomePageState extends State<patholeDectionForm> with WidgetsBindingObse
     categoryType = "${widget.name}";
     iCategoryCodeList = "${widget.iCategoryCode}";
     print("---------240-------$subCategoryCode");
-    bindSubCategory(subCategoryCode);
+   // bindSubCategory(subCategoryCode);
     bindWard();
     generateRandom20DigitNumber();
     super.initState();
-
   }
 
   @override
@@ -437,7 +432,6 @@ class _MyHomePageState extends State<patholeDectionForm> with WidgetsBindingObse
             centerTitle: true,
             elevation: 0, // Removes shadow under the AppBar
           ),
-
           body: SingleChildScrollView(
             child: Padding(
               padding: const EdgeInsets.only(bottom: 20),
@@ -719,10 +713,9 @@ class _MyHomePageState extends State<patholeDectionForm> with WidgetsBindingObse
                                     String formattedDate = DateFormat('dd/MMM/yyyy hh:mm').format(now);
                                     // TextFormField value
 
-
-
                                     var location = _addressController.text.trim();
                                     var complaintDescription = _landmarkController.text.trim();
+
                                     var iPostedBy = "0";
                                     var iAgencyCode = "1";
                                     var sCitizenContactNo = sContactNo;
@@ -754,7 +747,6 @@ class _MyHomePageState extends State<patholeDectionForm> with WidgetsBindingObse
                                           lat,
                                           long,
                                           locationAddress
-
                                       );
 
                                       print('----761---$potholeResponse');
@@ -779,6 +771,7 @@ class _MyHomePageState extends State<patholeDectionForm> with WidgetsBindingObse
                                     }
                                     if(result=="1"){
                                       displayToast(msg);
+
                                       Navigator.push(
                                         context,
                                         MaterialPageRoute(builder: (context) => OnlineComplaint()),

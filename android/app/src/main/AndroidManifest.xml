@@ -7,7 +7,7 @@
 
     <application
         android:usesCleartextTraffic="true"
-        android:label="Noida Citizen"
+        android:label="GNIDA"
         android:name="${applicationName}"
         android:icon="@mipmap/icon"
         android:enableOnBackInvokedCallback="false">

@@ -265,7 +265,7 @@ class _LoginPageState extends State<LoginPage> {
                             ),
                             width: AppSize.s50,
                             height: AppSize.s50,
-                            child: Image.asset("assets/icon/icon.png",
+                            child: Image.asset("assets/images/gnoidatop.jpeg",
                               //ImageAssets.logintopleft,
                               width: AppSize.s50,
                               height: AppSize.s50,
@@ -307,7 +307,7 @@ class _LoginPageState extends State<LoginPage> {
                           padding: const EdgeInsets.all(AppMargin.m16),
                           child: Center(
                             child: Image.asset(
-                              "assets/icon/icon.png",
+                              "assets/images/gnoidatop.jpeg",
                              // ImageAssets.iclauncher, // Replace with your image asset path
                               width: AppSize.s145,
                               height: AppSize.s145,

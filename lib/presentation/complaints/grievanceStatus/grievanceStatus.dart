@@ -1,6 +1,4 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:geolocator/geolocator.dart';
@@ -53,14 +51,22 @@ class _TemplesHomeState extends State<GrievanceStatus> {
 
   // Api response
 
-  pendingInternalComplaintResponse() async {
-    pendingInternalComplaintList =
-        await CitizenMyPostComplaintRepo().cityzenpostcomplaint(context);
-    print('-----53----$pendingInternalComplaintList');
-    _filteredData = List<Map<String, dynamic>>.from(pendingInternalComplaintList ?? []);
+  // pendingInternalComplaintResponse() async {
+  //   pendingInternalComplaintList = await CitizenMyPostComplaintRepo().cityzenpostcomplaint(context);
+  //   print('-----53----$pendingInternalComplaintList');
+  //   _filteredData = List<Map<String, dynamic>>.from(pendingInternalComplaintList ?? []);
+  //   print("----58---$_filteredData");
+  //
+  //   setState(() {
+  //     // parkList=[];
+  //     isLoading = false;
+  //   });
+  // }
+  Future<void> pendingInternalComplaintResponse() async {
+    pendingInternalComplaintList = await CitizenMyPostComplaintRepo().cityzenpostcomplaint(context);
 
     setState(() {
-      // parkList=[];
+      _filteredData = List<Map<String, dynamic>>.from(pendingInternalComplaintList as Iterable);
       isLoading = false;
     });
   }
@@ -80,18 +86,33 @@ class _TemplesHomeState extends State<GrievanceStatus> {
     super.dispose();
   }
 
+  // void _search() {
+  //   String query = _searchController.text.toLowerCase();
+  //   setState(() {
+  //     _filteredData = pendingInternalComplaintList?.where((item) {
+  //           String location = item['sPointTypeName'].toLowerCase();
+  //           String pointType = item['iCompCode'].toLowerCase();
+  //           String sector = item['sSectorName'].toLowerCase();
+  //           return location.contains(query) ||
+  //               pointType.contains(query) ||
+  //               sector.contains(query);
+  //         }).toList() ??
+  //         [];
+  //   });
+  // }
   void _search() {
     String query = _searchController.text.toLowerCase();
+
     setState(() {
-      _filteredData = pendingInternalComplaintList?.where((item) {
-            String location = item['sPointTypeName'].toLowerCase();
-            String pointType = item['iCompCode'].toLowerCase();
-            String sector = item['sSectorName'].toLowerCase();
-            return location.contains(query) ||
-                pointType.contains(query) ||
-                sector.contains(query);
-          }).toList() ??
-          [];
+      _filteredData = pendingInternalComplaintList!.where((item) {
+        String location = (item['sPointTypeName'] ?? '').toString().toLowerCase();
+        String pointType = (item['iCompCode'] ?? '').toString().toLowerCase(); // 👈 convert int to string
+        String sector = (item['sSectorName'] ?? '').toString().toLowerCase();
+
+        return location.contains(query) ||
+            pointType.contains(query) ||
+            sector.contains(query);
+      }).toList();
     });
   }
 
@@ -177,9 +198,9 @@ class _TemplesHomeState extends State<GrievanceStatus> {
                                         child: TextFormField(
                                           controller: _searchController,
                                           autofocus: true,
-                                          onChanged: (value) {
-                                            _search(); // 👈 call your custom search function
-                                          },
+                                          // onChanged: (value) {
+                                          //   _search(); // 👈 call your custom search function
+                                          // },
                                           decoration: const InputDecoration(
                                             prefixIcon: Icon(Icons.search),
                                             hintText: 'Enter Keywords',

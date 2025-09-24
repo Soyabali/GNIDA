@@ -12,7 +12,6 @@ import '../potholedetection/potholeDetection.dart';
 import '../resources/app_text_style.dart';
 import 'grievanceStatus/grievanceStatus.dart';
 
-
 class ComplaintHomePage extends StatefulWidget {
 
   final lat,long;
@@ -89,7 +88,7 @@ class _MyHomePageState extends State<ComplaintHomePage> {
     super.dispose();
   }
 
-  Widget logoutDialogBox(BuildContext context){
+  Widget logoutDialogBox(BuildContext context) {
     return AlertDialog(
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(15.0),
@@ -131,7 +130,7 @@ class _MyHomePageState extends State<ComplaintHomePage> {
       child: Scaffold(
         backgroundColor: Colors.white,
         // appBar
-       appBar: appBarFunction(context,"Noida One Citizen"),
+       appBar: appBarFunction(context,"GNIDA"),
        drawer: generalFunction.drawerFunction_2(context,"$sCitizenName","$sContactNo"),
         body: Stack(
          // fit: StackFit.expand, // Make the stack fill the entire screen

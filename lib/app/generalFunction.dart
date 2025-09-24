@@ -1030,6 +1030,11 @@ class GeneralFunction {
                     ),
                   ),
                   const SizedBox(height: 15),
+                  Divider(
+                    height: 1,
+                    color: Colors.grey,
+                  ),
+                  SizedBox(height: 10),
                   GestureDetector(
                     onTap: () {
                       print("-----Deleting Account-----");
@@ -1059,6 +1064,11 @@ class GeneralFunction {
                     ),
                   ),
                   const SizedBox(height: 15),
+                  Divider(
+                    height: 1,
+                    color: Colors.grey,
+                  ),
+                  SizedBox(height: 10),
                   GestureDetector(
                     onTap: () async {
                       // clear all store SharedPreferenceValue :
