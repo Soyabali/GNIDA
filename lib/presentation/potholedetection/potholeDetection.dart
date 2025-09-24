@@ -8,6 +8,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../app/generalFunction.dart';
 import '../../app/loader_helper.dart';
@@ -94,6 +95,7 @@ class _MyHomePageState extends State<patholeDectionForm> with WidgetsBindingObse
   var iCategoryCodeList;
   var locationAddress;
   List<Map<String, dynamic>> firstFormCombinedList = [];
+  var potholeResponseBody;
 
   // online location
   // pick image from a Camera
@@ -108,9 +110,12 @@ class _MyHomePageState extends State<patholeDectionForm> with WidgetsBindingObse
       if (pickFileid != null) {
         image = File(pickFileid.path);
         setState(() {});
-        print('Image File path Id Proof-------167----->$image');
+        print('Image File path Id Proof-------111----->$image');
+
         // multipartProdecudre();
+       // uploadImagePothole(image as String);
         uploadImage(sToken!, image!);
+
       } else {
         print('no image selected');
       }
@@ -126,6 +131,7 @@ class _MyHomePageState extends State<patholeDectionForm> with WidgetsBindingObse
       final pickFileid = await ImagePicker().pickImage(source: ImageSource.gallery, imageQuality: 65);
       if (pickFileid != null) {
         image = File(pickFileid.path);
+
         setState(() {});
         print('Image File path Id Proof-------167----->$image');
         // multipartProdecudre();
@@ -229,8 +235,12 @@ class _MyHomePageState extends State<patholeDectionForm> with WidgetsBindingObse
       if (responseData is Map<String, dynamic>) {
         // Check for specific keys in the response
         uplodedImage = responseData['Data'][0]['sImagePath'];
-        //uere to uplode pothole detections api to calll a response
-        uploadImagePothole(uplodedImage);
+        print('xxxxxx-----xxxx--------232------$uplodedImage');
+       // uploadImagePothole(uplodedImage);
+        if(uplodedImage!=null){
+          detectFromApiUrl(uplodedImage);
+        }
+
         print('Uploaded Image--------201---->>.--: $uplodedImage');
       } else {
         print('Unexpected response format: $responseData');
@@ -241,45 +251,46 @@ class _MyHomePageState extends State<patholeDectionForm> with WidgetsBindingObse
       print('Error uploading image: $error');
     }
   }
-  // uplodeimagePothole
-  Future<void> uploadImagePothole(String uplodedImage) async {
 
-    // http://125.21.67.106:5000/detect
-    var baseURL = BaseRepo().baseurl;
-    var endPoint = "PostCitizenImage/PostCitizenImage";
-    var uploadImagePotholeApi = "http://125.21.67.106:5000/detect";
+  //
+
+  Future<void> detectFromApiUrl(String apiUrl) async {
     try {
-      showLoader();
-      // Create a multipart request
-      var request = http.MultipartRequest(
-        'POST', Uri.parse('$uploadImagePotholeApi'),
-      );
-      // Add headers
-      //request.headers['token'] = '04605D46-74B1-4766-9976-921EE7E700A6';
-     // request.headers['token'] = token;
-      //  request.headers['sFolder'] = 'CompImage';
-      // Add the image file as a part of the request
-      request.files.add(await http.MultipartFile.fromPath('image',uplodedImage,
-      ));
-      // Send the request
-      var streamedResponse = await request.send();
-      // Get the response
-      var response = await http.Response.fromStream(streamedResponse);
-      // Parse the response JSON
-      var responseData = json.decode(response.body); // No explicit type casting
-      print("---------248-----$responseData");
-      if (responseData is Map<String, dynamic>) {
-        // Check for specific keys in the response
-        /// todo here you pick a endpooint
-      var uplodedImagePothole = responseData['Data'][0]['sImagePath'];
-        print('Uploaded Image--------201---->>.--: $uplodedImagePothole');
+      print("---257---$apiUrl");
+
+      // Step 1: Download image from apiUrl
+      var imageResponse = await http.get(Uri.parse(apiUrl));
+
+      if (imageResponse.statusCode == 200) {
+        // Save to temporary file
+        final tempDir = await getTemporaryDirectory();
+        final file = File('${tempDir.path}/temp_image.jpg');
+        await file.writeAsBytes(imageResponse.bodyBytes);
+
+        // Step 2: Create Multipart request with file
+        var request = http.MultipartRequest(
+          'POST',
+          Uri.parse('http://125.21.67.106:5000/detect'),
+        );
+
+        request.files.add(await http.MultipartFile.fromPath('image', file.path));
+
+        // Step 3: Send request
+        var response = await request.send();
+
+        if (response.statusCode == 200) {
+
+          potholeResponseBody = await response.stream.bytesToString();
+          print("✅ Detection Response: $potholeResponseBody");
+        } else {
+          print("❌ Error: ${response.reasonPhrase}");
+          print("${response.statusCode}");
+        }
       } else {
-        print('Unexpected response format: $responseData');
+        print("❌ Failed to download image from apiUrl");
       }
-      hideLoader();
-    } catch (error) {
-      hideLoader();
-      print('Error uploading image: $error');
+    } catch (e) {
+      print("⚠️ Exception: $e");
     }
   }
 
@@ -737,6 +748,19 @@ class _MyHomePageState extends State<patholeDectionForm> with WidgetsBindingObse
                                       print("-----PotholLocation ---$locationAddress");
                                       print("-----Json --- : ");
 
+                                      // buld a final requestBody
+                                      Map<String, dynamic> requestBody = {
+                                        "Sector": _selectedWardId2,
+                                        "UserId": sContactNo,
+                                        "TranNo": random12DigitNumber,
+                                        "PotholeImage": uplodedImage,
+                                        "Latitude": lat,
+                                        "Longitude": long,
+                                        "PotholLocation": locationAddress,
+                                        "Json": '$potholeResponseBody', // 👈 nested list here
+                                      };
+                                      print("-----763---$requestBody");
+
 
                                       var  potholeResponse = await PothoLedetailsRepo().photoledetail(
                                           context,
@@ -746,10 +770,11 @@ class _MyHomePageState extends State<patholeDectionForm> with WidgetsBindingObse
                                           uplodedImage,
                                           lat,
                                           long,
-                                          locationAddress
+                                          locationAddress,
+                                          potholeResponseBody
                                       );
-
                                       print('----761---$potholeResponse');
+
                                       result = potholeResponse['Result'];
                                       msg = potholeResponse['Msg'];
                                     }else{

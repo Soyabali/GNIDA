@@ -14,7 +14,7 @@ class PothoLedetailsRepo {
   GeneralFunction generalFunction = GeneralFunction();
 
   Future photoledetail(
-      BuildContext context, selectedWardId2, String? sContactNo, String random12digitNumber, uplodedImage, double? lat, double? long, locationAddress) async {
+      BuildContext context, selectedWardId2, String? sContactNo, String random12digitNumber, uplodedImage, double? lat, double? long, locationAddress, potholeResponseBody) async {
     //
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String? sToken = prefs.getString('sToken');
@@ -35,6 +35,7 @@ class PothoLedetailsRepo {
       print("---35----lat:  $long");
       print("---36----address:  $locationAddress");
       print("---37----sToken:  $sToken");
+      print("-----38--photoleResponse---$potholeResponseBody");
 
       showLoader();
       // var headers = {'Content-Type': 'application/json'};
@@ -45,20 +46,20 @@ class PothoLedetailsRepo {
           'POST', Uri.parse('$potholeDetailApi'));
       request.body = json.encode({
         "Sector": selectedWardId2,
-        "UserId":sContactNo,
+        "UserId":'1',
         "TranNo":random12digitNumber,
         "PotholeImage":uplodedImage,
         "Latitude":lat,
         "Longitude":long,
         "PotholLocation":locationAddress,
-        "Json":""
+        "Json":potholeResponseBody
       });
       request.headers.addAll(headers);
       http.StreamedResponse response = await request.send();
       var map;
       var data = await response.stream.bytesToString();
       map = json.decode(data);
-      print('----------20---LOGINaPI RESPONSE----$map');
+      print('----------62---LOGINaPI RESPONSE----$map');
 
       if (response.statusCode == 200) {
         // create an instance of auth class

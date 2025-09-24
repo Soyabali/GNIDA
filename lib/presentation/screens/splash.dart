@@ -111,6 +111,8 @@ class _SplaceState extends State<SplashView> {
       msg = "${loginMap['Msg']}";
       iVersion = "${loginMap['iVersion']}";
 
+      print("------114---$loginMap");
+
       // Check result and navigate or show dialog
       if (iVersion == "1") {
         // Navigate to LoginScreen if version matches
